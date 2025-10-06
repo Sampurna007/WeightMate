@@ -1,4 +1,5 @@
 import { useRouter } from "expo-router";
+import { Image } from "react-native";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -17,6 +18,7 @@ export default function Home() {
     try {
       await addDoc(collection(db, "weightLogs"), {
         uid: auth.currentUser.uid,
+        email: auth.currentUser?.email || "", // captures the email of the users
         weight: parseFloat(weight),
         createdAt: Timestamp.now(),
       });
@@ -31,6 +33,12 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to WeightMate</Text>
+
+       {/* Image for the hom screen */}
+  <Image
+    source={require("../../assets/weight.png")}
+    style={styles.image}
+  />
       <Text style={styles.subtitle}>Log your current weight below:</Text>
 
       <TextInput
@@ -73,6 +81,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 15,
   },
+  image: {
+  width: 200,
+  height: 200,
+  marginBottom: 20,
+  resizeMode: "contain",
+},
   buttonText: { color: "#fff", fontSize: 18, fontWeight: "600" },
   link: { fontSize: 16, color: "#34C759" },
 });

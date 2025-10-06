@@ -28,14 +28,15 @@ export default function WeightLogs() {
     fetchLogs();
   }, []);
 
-  const renderItem = ({ item }) => (
-    <View style={styles.logItem}>
-      <Text style={styles.weight}>Weight: {item.weight} kg</Text>
-      <Text style={styles.date}>
-        {item.createdAt.toDate().toLocaleString()}
-      </Text>
-    </View>
-  );
+ const renderItem = ({ item }) => (
+  <View style={styles.logItem}>
+    <Text style={styles.weight}>Weight: {item.weight ?? "N/A"} kg</Text>
+    {item.email ? <Text style={styles.email}>By: {item.email}</Text> : null}
+    <Text style={styles.date}>
+      {item.createdAt ? item.createdAt.toDate().toLocaleString() : "No date"}
+    </Text>
+  </View>
+);
 
   return (
     <View style={styles.container}>
@@ -56,4 +57,6 @@ const styles = StyleSheet.create({
   logItem: { padding: 15, borderBottomWidth: 1, borderColor: "#ddd" },
   weight: { fontSize: 18, fontWeight: "600" },
   date: { fontSize: 14, color: "#666" },
+  email: { fontSize: 14, color: "#333", marginTop: 2 },
+
 });

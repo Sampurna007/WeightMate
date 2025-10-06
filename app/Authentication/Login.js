@@ -20,7 +20,7 @@ export default function Login() {
       }
 
       Alert.alert("Welcome back!");
-      // later redirect to Home screen
+      router.replace("/(tabs)/Home");
     } catch (error) {
       Alert.alert("Login Failed", error.message);
     }
