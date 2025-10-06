@@ -1,39 +1,43 @@
 import { Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { Image } from "react-native";
 
-export default function Layout() {
+function TabIcon({ source, color, size }) {
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: "#007AFF",
-        tabBarInactiveTintColor: "gray",
-      }}
-    >
+    <Image
+      source={source}
+      style={{ width: size, height: size, tintColor: color }}
+      resizeMode="contain"
+    />
+  );
+}
+
+export default function TabLayout() {
+  return (
+    <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
-        name="index"
+        name="Home"
         options={{
           title: "Home",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
+            <TabIcon source={require("../../assets/home.png")} color={color} size={size} />
           ),
         }}
       />
       <Tabs.Screen
         name="bmi"
         options={{
-          title: "Calculate BMI",
+          title: "BMI",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="fitness-outline" size={size} color={color} />
+            <TabIcon source={require("../../assets/bmi.png")} color={color} size={size} />
           ),
         }}
       />
       <Tabs.Screen
-        name="WeightLogs"
+        name="Weightlogs"
         options={{
-          title: "Weight Logs",
+          title: "Logs",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="bar-chart-outline" size={size} color={color} />
+            <TabIcon source={require("../../assets/log.png")} color={color} size={size} />
           ),
         }}
       />
@@ -42,7 +46,7 @@ export default function Layout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" size={size} color={color} />
+            <TabIcon source={require("../../assets/user.png")} color={color} size={size} />
           ),
         }}
       />
