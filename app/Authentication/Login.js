@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useRouter } from "expo-router";
-import { auth } from "../firebaseConfig";
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { auth } from "../utils/firebase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -67,7 +67,7 @@ export default function Login() {
         <Text style={styles.link}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push("/register")}>
+      <TouchableOpacity onPress={() => router.push("/Authentication/Register")}>
         <Text style={styles.link}>Don’t have an account? Register</Text>
       </TouchableOpacity>
     </View>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#34C759",
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 8,
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
+
   buttonText: { color: "#fff", fontSize: 18, fontWeight: "600" },
   link: { marginTop: 15, fontSize: 16, color: "#007AFF" },
 });

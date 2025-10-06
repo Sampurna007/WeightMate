@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useRouter } from "expo-router";
-import { auth } from "../firebaseConfig";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { useState } from "react";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { auth } from "../utils/firebase";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -25,7 +25,7 @@ export default function Register() {
       Alert.alert("Success", "Verification email sent. Please verify before logging in.");
 
       // redirect to login screen
-      router.replace("/Authentication/login");
+      router.replace("/Authentication/Login");
 
     } catch (error) {
       Alert.alert("Registration Failed", error.message);
@@ -56,7 +56,7 @@ export default function Register() {
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push("/login")}>
+      <TouchableOpacity onPress={() => router.push("/Authentication/Login")}>
         <Text style={styles.link}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
