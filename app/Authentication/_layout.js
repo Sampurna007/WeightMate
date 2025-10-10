@@ -1,3 +1,5 @@
+// app/Authentication/_layout
+
 import { Tabs } from 'expo-router';
 import React from 'react';
 

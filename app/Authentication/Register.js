@@ -1,3 +1,5 @@
+// app/Authentication/Register 
+
 import { useRouter } from "expo-router";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { useState } from "react";
