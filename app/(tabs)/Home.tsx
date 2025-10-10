@@ -1,15 +1,17 @@
 import { useRouter } from "expo-router";
-import { Image } from "react-native";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { JSX } from "react/jsx-runtime";
 import { auth, db } from "../utils/firebase";
 
-export default function Home() {
-  const [weight, setWeight] = useState("");
+
+// 🔹 Component
+export default function Home(): JSX.Element {
+  const [weight, setWeight] = useState<string>(""); // explicit type
   const router = useRouter();
 
-  const handleAddWeight = async () => {
+  const handleAddWeight = async (): Promise<void> => {
     if (!weight) {
       Alert.alert("Error", "Please enter a weight");
       return;
@@ -17,15 +19,15 @@ export default function Home() {
 
     try {
       await addDoc(collection(db, "weightLogs"), {
-        uid: auth.currentUser.uid,
-        email: auth.currentUser?.email || "", // captures the email of the users
+        uid: auth.currentUser?.uid ?? "",        // 
+        email: auth.currentUser?.email ?? "",    // 
         weight: parseFloat(weight),
         createdAt: Timestamp.now(),
       });
 
       Alert.alert("Success", "Weight recorded successfully!");
       setWeight("");
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert("Error saving weight", error.message);
     }
   };
@@ -34,11 +36,9 @@ export default function Home() {
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to WeightMate</Text>
 
-       {/* Image for the hom screen */}
-  <Image
-    source={require("../../assets/weight.png")}
-    style={styles.image}
-  />
+      {/* Home screen image */}
+      <Image source={require("../../assets/weight.png")} style={styles.image} />
+
       <Text style={styles.subtitle}>Log your current weight below:</Text>
 
       <TextInput
@@ -53,35 +53,32 @@ export default function Home() {
         <Text style={styles.buttonText}>Save Weight</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push("/WeightLogs/Weightlogs")}>
+      <TouchableOpacity onPress={() => router.push({ pathname: "/(tabs)/Weightlogs" })}>
         <Text style={styles.link}>View Weight Logs</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
+// 🔹 Styles
 const styles = StyleSheet.create({
-
-  container: { 
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "center", 
-    padding: 20, 
-    backgroundColor: "#fff" 
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: "#fff",
   },
-
-
-  title: { 
+  title: {
     fontSize: 28,
-     fontWeight: "bold", 
-     marginBottom: 10
-     },
-
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
   subtitle: {
-     fontSize: 16,
-      color: "#555",
-       marginBottom: 20 },
-
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 20,
+  },
   input: {
     width: "100%",
     height: 50,
@@ -100,18 +97,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   image: {
-  width: 200,
-  height: 200,
-  marginBottom: 20,
-  resizeMode: "contain",
-},
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+    resizeMode: "contain",
+  },
   buttonText: {
-     color: "#fff",
-     fontSize: 18,
-    fontWeight: "600"
-    },
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+  },
   link: {
-     fontSize: 16,
-      color: "#34C759"
-     },
+    fontSize: 16,
+    color: "#34C759",
+  },
 });

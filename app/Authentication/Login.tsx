@@ -1,19 +1,19 @@
-// app/Authentication/Login
-
 import { useRouter } from "expo-router";
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { sendPasswordResetEmail, signInWithEmailAndPassword, UserCredential } from "firebase/auth";
+import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { auth } from "../utils/firebase";
+import { JSX } from "react/jsx-runtime";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+export default function Login(): JSX.Element {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const router = useRouter();
 
-  const handleLogin = async () => {
+  const handleLogin = async (): Promise<void> => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       if (!user.emailVerified) {
@@ -22,13 +22,13 @@ export default function Login() {
       }
 
       Alert.alert("Welcome back!");
-      router.replace("/(tabs)/Home");
-    } catch (error) {
+    router.replace({ pathname: "/(tabs)/Home" });
+    } catch (error: any) {
       Alert.alert("Login Failed", error.message);
     }
   };
 
-  const handleForgotPassword = async () => {
+  const handleForgotPassword = async (): Promise<void> => {
     if (!email) {
       Alert.alert("Error", "Enter your email to reset password.");
       return;
@@ -36,7 +36,7 @@ export default function Login() {
     try {
       await sendPasswordResetEmail(auth, email);
       Alert.alert("Password Reset", "Check your email for reset instructions.");
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert("Error", error.message);
     }
   };
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
-
   buttonText: { color: "#fff", fontSize: 18, fontWeight: "600" },
   link: { marginTop: 15, fontSize: 16, color: "#007AFF" },
 });

@@ -1,7 +1,10 @@
 import { useRouter } from "expo-router";
+import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { JSX } from "react/jsx-runtime";
 
-export default function GetStarted() {
+
+export default function GetStarted(): JSX.Element {
   const router = useRouter();
 
   return (

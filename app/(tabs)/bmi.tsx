@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { useState } from "react";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { JSX } from "react/jsx-runtime";
 
-export default function BMI() {
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
-  const [age, setAge] = useState("");
-  const [bmi, setBmi] = useState(null);
-  const [category, setCategory] = useState("");
+export default function BMI(): JSX.Element {
+  const [height, setHeight] = useState<string>("");
+  const [weight, setWeight] = useState<string>("");
+  const [age, setAge] = useState<string>("");
+  const [bmi, setBmi] = useState<string | null>(null);
+  const [category, setCategory] = useState<string>("");
 
-  const calculateBMI = () => {
+  const calculateBMI = (): void => {
     if (!height || !weight || !age) {
       setBmi(null);
       setCategory("Please enter all fields.");

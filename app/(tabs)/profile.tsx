@@ -1,35 +1,39 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-  ScrollView,
-} from "react-native";
-import { auth, db } from "../utils/firebase";
-import { signOut, updateEmail, updatePassword } from "firebase/auth";
-import { collection, query, where, orderBy, limit, getDocs } from "firebase/firestore";
 import { useRouter } from "expo-router";
+import { signOut, updateEmail, updatePassword, User } from "firebase/auth";
+import { collection, DocumentData, getDocs, limit, orderBy, query, where } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { JSX } from "react/jsx-runtime";
+import { auth, db } from "../utils/firebase";
+
 
 const PRIMARY_COLOR = "#00CC66"; // green
 
-export default function Profile() {
-  const [userEmail, setUserEmail] = useState("");
-  const [currentWeight, setCurrentWeight] = useState("N/A");
-  const [newEmail, setNewEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+export default function Profile(): JSX.Element {
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [currentWeight, setCurrentWeight] = useState<string>("N/A");
+  const [newEmail, setNewEmail] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
   const router = useRouter();
 
+  // Load current user email
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
+    const user: User | null = auth.currentUser;
+    if (user?.email) {
       setUserEmail(user.email);
     }
   }, []);
 
+  // Fetch latest weight log
   useEffect(() => {
     const fetchWeight = async () => {
       try {
@@ -45,8 +49,10 @@ export default function Profile() {
 
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
-          const doc = querySnapshot.docs[0].data();
-          setCurrentWeight(doc.weight + " kg");
+          const doc: DocumentData = querySnapshot.docs[0].data();
+          if (doc.weight) {
+            setCurrentWeight(doc.weight + " kg");
+          }
         }
       } catch (error) {
         console.log("Error fetching weight:", error);
@@ -56,40 +62,51 @@ export default function Profile() {
     fetchWeight();
   }, []);
 
-  const handleChangeEmail = async () => {
+  // Change Email
+  const handleChangeEmail = async (): Promise<void> => {
     try {
       if (!newEmail) {
         Alert.alert("Error", "Please enter a new email");
+        return;
+      }
+      if (!auth.currentUser) {
+        Alert.alert("Error", "No user logged in");
         return;
       }
       await updateEmail(auth.currentUser, newEmail);
       setUserEmail(newEmail);
       Alert.alert("Success", "Email updated!");
       setNewEmail("");
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert("Update Failed", error.message);
     }
   };
 
-  const handleChangePassword = async () => {
+  // Change Password
+  const handleChangePassword = async (): Promise<void> => {
     try {
       if (!newPassword) {
         Alert.alert("Error", "Please enter a new password");
         return;
       }
+      if (!auth.currentUser) {
+        Alert.alert("Error", "No user logged in");
+        return;
+      }
       await updatePassword(auth.currentUser, newPassword);
       Alert.alert("Success", "Password updated!");
       setNewPassword("");
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert("Update Failed", error.message);
     }
   };
 
-  const handleLogout = async () => {
+  // Logout
+  const handleLogout = async (): Promise<void> => {
     try {
       await signOut(auth);
       router.replace("/Authentication/Login");
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert("Logout Failed", error.message);
     }
   };

@@ -1,7 +1,16 @@
 import { Tabs } from "expo-router";
-import { Image } from "react-native";
+import { Image, ImageSourcePropType } from "react-native";
+import React from "react";
+import { JSX } from "react/jsx-runtime";
 
-function TabIcon({ source, color, size }) {
+
+interface TabIconProps {
+  source: ImageSourcePropType;
+  color: string;
+  size: number;
+}
+
+function TabIcon({ source, color, size }: TabIconProps): JSX.Element {
   return (
     <Image
       source={source}
@@ -11,7 +20,7 @@ function TabIcon({ source, color, size }) {
   );
 }
 
-export default function TabLayout() {
+export default function TabLayout(): JSX.Element {
   return (
     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen

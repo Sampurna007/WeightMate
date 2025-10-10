@@ -1,22 +1,31 @@
-import { collection, getDocs, orderBy, query, where, deleteDoc, doc } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { collection, getDocs, orderBy, query, where, deleteDoc, doc, DocumentData } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert, ListRenderItem } from "react-native";
 import { auth, db } from "../utils/firebase";
+import { JSX } from "react/jsx-runtime";
 
-export default function WeightLogs() {
-  const [logs, setLogs] = useState([]);
 
-  const fetchLogs = async () => {
+interface WeightLog {
+  id: string;
+  weight?: number;
+  email?: string;
+  createdAt?: any; // Firestore Timestamp
+}
+
+export default function WeightLogs(): JSX.Element {
+  const [logs, setLogs] = useState<WeightLog[]>([]);
+
+  const fetchLogs = async (): Promise<void> => {
     try {
       const q = query(
         collection(db, "weightLogs"),
-        where("uid", "==", auth.currentUser.uid),
+        where("uid", "==", auth.currentUser?.uid ?? ""),
         orderBy("createdAt", "desc")
       );
       const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((docSnap) => ({
+      const data: WeightLog[] = querySnapshot.docs.map((docSnap) => ({
         id: docSnap.id,
-        ...docSnap.data(),
+        ...(docSnap.data() as DocumentData),
       }));
       setLogs(data);
     } catch (error) {
@@ -28,7 +37,7 @@ export default function WeightLogs() {
     fetchLogs();
   }, []);
 
-  const confirmDelete = (id) => {
+  const confirmDelete = (id: string): void => {
     Alert.alert(
       "Delete Log",
       "Are you sure you want to delete this log? This action cannot be undone.",
@@ -39,7 +48,7 @@ export default function WeightLogs() {
     );
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string): Promise<void> => {
     try {
       await deleteDoc(doc(db, "weightLogs", id));
       setLogs((prevLogs) => prevLogs.filter((log) => log.id !== id));
@@ -49,7 +58,7 @@ export default function WeightLogs() {
     }
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem: ListRenderItem<WeightLog> = ({ item }) => (
     <View style={styles.logItem}>
       <View style={{ flex: 1 }}>
         <Text style={styles.weight}>Weight: {item.weight ?? "N/A"} kg</Text>
