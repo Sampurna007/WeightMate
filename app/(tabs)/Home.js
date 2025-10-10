@@ -61,9 +61,27 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20, backgroundColor: "#fff" },
-  title: { fontSize: 28, fontWeight: "bold", marginBottom: 10 },
-  subtitle: { fontSize: 16, color: "#555", marginBottom: 20 },
+
+  container: { 
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    padding: 20, 
+    backgroundColor: "#fff" 
+  },
+
+
+  title: { 
+    fontSize: 28,
+     fontWeight: "bold", 
+     marginBottom: 10
+     },
+
+  subtitle: {
+     fontSize: 16,
+      color: "#555",
+       marginBottom: 20 },
+
   input: {
     width: "100%",
     height: 50,
@@ -87,6 +105,13 @@ const styles = StyleSheet.create({
   marginBottom: 20,
   resizeMode: "contain",
 },
-  buttonText: { color: "#fff", fontSize: 18, fontWeight: "600" },
-  link: { fontSize: 16, color: "#34C759" },
+  buttonText: {
+     color: "#fff",
+     fontSize: 18,
+    fontWeight: "600"
+    },
+  link: {
+     fontSize: 16,
+      color: "#34C759"
+     },
 });
